@@ -4,8 +4,9 @@
   <meta charset="utf-8">
   <title>Wesak Lantern AR</title>
   <meta name="description" content="AR Wesak Lantern for Kalapaya">
-  <script src="https://cdn.8thwall.com/web/aframe/8frame-1.5.0.min.js"></script>
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
   <script src="https://cdn.8thwall.com/web/xrextras/xrextras.js"></script>
+  <script src="https://apps.8thwall.com/xrweb?appKey=YOUR-8THWALL-APP-KEY"></script>
 </head>
 <body>
   <a-scene
@@ -13,7 +14,7 @@
     xrextras-almost-there
     xrextras-loading
     xrextras-runtime-error
-    xrweb
+    xrweb="allowedDevices: any;"
     renderer="logarithmicDepthBuffer: true;"
   >
     <!-- Sky background (transparent to show camera feed) -->
@@ -23,7 +24,6 @@
     <a-assets>
       <a-asset-item id="lanternModel" src="./assets/vesak_lanterns.glb"></a-asset-item>
     </a-assets>
-
     <!-- Lantern positioned 2 meters above the user -->
     <a-entity
       position="0 2 0"
@@ -33,12 +33,21 @@
       xrextras-two-finger-rotate
       xrextras-pinch-scale
       animation="property: rotation; to: 0 360 0; loop: true; dur: 10000"
+      visible="false"
+      id="lantern"
     >
       <!-- Add a glowing light effect -->
       <a-entity
         light="type: point; intensity: 1; color: #FFD700; distance: 5"
         position="0 0 0"
       ></a-entity>
+    </a-entity>
+    <script>
+      // Show the lantern only after assets are loaded
+      document.querySelector('a-scene').addEventListener('loaded', function () {
+        document.getElementById('lantern').setAttribute('visible', 'true');
+      });
+    </script>
     </a-entity>
 
     <!-- Camera -->
